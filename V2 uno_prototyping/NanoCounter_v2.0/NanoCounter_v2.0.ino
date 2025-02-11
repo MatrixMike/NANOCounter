@@ -1,6 +1,6 @@
-#include <EEPROM.h> // Saves data to EEPROM
-#include <Wire.h> // Library for I2C communication
-#include <LiquidCrystal_I2C.h> // Library for LCD
+#include <EEPROM.h>             // Saves data to EEPROM
+#include <Wire.h>               // Library for I2C communication
+#include <LiquidCrystal_I2C.h>  // Library for LCD
 
 LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 2);
 
@@ -8,7 +8,7 @@ int buttonreset = 0;
 
 int removed;
 int lastpressed;
-const int buttons[] = {0, 1, 2, 3, 6, 7};
+const int buttons[] = { 0, 1, 2, 3, 6, 7 };
 
 const int tone1 = 500;
 const int tone2 = 650;
@@ -42,22 +42,22 @@ void reload() {
   lcd.clear();
 
 
-  lcd.setCursor(0 ,0);
+  lcd.setCursor(0, 0);
   lcd.print(count1);
 
-  lcd.setCursor(7 ,0);
+  lcd.setCursor(7, 0);
   lcd.print(count2);
 
-  lcd.setCursor(13 ,0);
+  lcd.setCursor(13, 0);
   lcd.print(count3);
 
-  lcd.setCursor(0 ,1);
+  lcd.setCursor(0, 1);
   lcd.print(count4);
 
-  lcd.setCursor(7 ,1);
+  lcd.setCursor(7, 1);
   lcd.print(count5);
 
-  lcd.setCursor(13 ,1);
+  lcd.setCursor(13, 1);
   lcd.print(count6);
 }
 
@@ -68,15 +68,15 @@ void setup() {
   EEPROM.get(count4EE, count4);
   EEPROM.get(count5EE, count5);
   EEPROM.get(count6EE, count6);
-  
+
   Serial.begin(9600);
-  
+
   lcd.init();
   lcd.backlight();
 
   pinMode(A4, OUTPUT);
   pinMode(A5, OUTPUT);
-  
+
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
@@ -85,25 +85,25 @@ void setup() {
   pinMode(A7, INPUT);
 
   lcd.clear();
-  lcd.setCursor(2 ,0);
+  lcd.setCursor(2, 0);
   lcd.print("NANOCOUNTER");
-  lcd.setCursor(2 , 1);
+  lcd.setCursor(2, 1);
   lcd.print("Version 1.6");
 
   delay(2000);
 
   lcd.clear();
-  lcd.setCursor(4 ,0);
+  lcd.setCursor(4, 0);
   lcd.print("A NasCO");
-  lcd.setCursor(0 , 1);
+  lcd.setCursor(0, 1);
   lcd.print("software product");
 
   delay(2000);
 
   lcd.clear();
-  lcd.setCursor(1 ,0);
+  lcd.setCursor(1, 0);
   lcd.print("Contact me at:");
-  lcd.setCursor(2 ,1);
+  lcd.setCursor(2, 1);
   lcd.print("<censored>");
 
   delay(2000);
@@ -127,31 +127,31 @@ void loop() {
   button6 = analogRead(A3);
   Serial.print(button1);
   Serial.print(" \t ");
-  
+
   Serial.print(button2);
   Serial.print(" \t ");
-  
+
   Serial.print(button3);
   Serial.print(" \t ");
-  
+
   Serial.print(button4);
   Serial.print(" \t ");
-  
+
   Serial.print(button5);
   Serial.print(" \t ");
-  
+
   Serial.println(button6);
-  
+
   if (digitalRead(9) == HIGH) {
-    if(buttonreset == 0){
+    if (buttonreset == 0) {
       int empty;
       empty = buttonreset + 1;
       buttonreset = empty;
 
       lcd.clear();
-      lcd.setCursor(1 ,0);
+      lcd.setCursor(1, 0);
       lcd.print("Reset mode: See");
-      lcd.setCursor(0 ,1);
+      lcd.setCursor(0, 1);
       lcd.print("back for options");
 
       tone(8, tone2);
@@ -165,10 +165,10 @@ void loop() {
       noTone(8);
     }
 
-    else if(buttonreset == 1){
+    else if (buttonreset == 1) {
       buttonreset = 0;
       removed = 1;
-      
+
       count1 = 0;
       count2 = 0;
       count3 = 0;
@@ -192,25 +192,24 @@ void loop() {
       tone(8, tone2);
       delay(100);
       noTone(8);
-
     }
     while (digitalRead(9) == HIGH) {}
   }
 
 
 
-  
-  if(button1 != 0){
-    if(buttonreset == 1){
+
+  if (button1 != 0) {
+    if (buttonreset == 1) {
       buttonreset = 0;
       reload();
       tone(8, tone4);
       delay(100);
       noTone(8);
-      while(analogRead(A0) != 0) {}
-      }
+      while (analogRead(A0) != 0) {}
+    }
 
-    else{
+    else {
       buttonreset = 0;
       removed = 0;
       lastpressed = buttons[1];
@@ -222,19 +221,19 @@ void loop() {
       tone(8, tone1);
       delay(100);
       noTone(8);
-      while(analogRead(A0) != 0) {}
+      while (analogRead(A0) != 0) {}
     }
   }
 
 
 
 
-  if(button2 != 0){
-    if(buttonreset == 1){
+  if (button2 != 0) {
+    if (buttonreset == 1) {
       while (analogRead(A1) != 0) {}
-      }
+    }
 
-    else{
+    else {
       buttonreset = 0;
       removed = 0;
       lastpressed = buttons[2];
@@ -246,7 +245,7 @@ void loop() {
       tone(8, tone2);
       delay(100);
       noTone(8);
-      while(analogRead(A1) != 0) {}
+      while (analogRead(A1) != 0) {}
     }
   }
 
@@ -254,11 +253,11 @@ void loop() {
 
 
   if (button3 != 0) {
-    if(buttonreset == 1){
+    if (buttonreset == 1) {
       while (analogRead(A2) != 0) {}
-      }
+    }
 
-    else{
+    else {
       buttonreset = 0;
       removed = 0;
       lastpressed = buttons[3];
@@ -276,74 +275,73 @@ void loop() {
 
 
 
-  if(button6 != 0) {
-    if(buttonreset == 1){
-      if(removed == 0){
+  if (button6 != 0) {
+    if (buttonreset == 1) {
+      if (removed == 0) {
         int empty;
-      
+
         buttonreset = 0;
-      
-        if(lastpressed == buttons[1]){
+
+        if (lastpressed == buttons[1]) {
           empty = count1 - 1;
           count1 = empty;
           removed = 1;
         }
-      
-        if(lastpressed == buttons[2]){
+
+        if (lastpressed == buttons[2]) {
           empty = count2 - 1;
           count2 = empty;
           removed = 1;
         }
-      
-        if(lastpressed == buttons[3]){
+
+        if (lastpressed == buttons[3]) {
           empty = count3 - 1;
           count3 = empty;
           removed = 1;
         }
-      
-        if(lastpressed == buttons[4]){
+
+        if (lastpressed == buttons[4]) {
           empty = count4 - 1;
           count4 = empty;
           removed = 1;
         }
 
-        if(lastpressed == buttons[5]){
+        if (lastpressed == buttons[5]) {
           empty = count5 - 1;
           count5 = empty;
           removed = 1;
         }
 
-        if(lastpressed == buttons[6]){
+        if (lastpressed == buttons[6]) {
           empty = count6 - 1;
           count6 = empty;
           removed = 1;
         }
-      
+
         reload();
         tone(8, tone2);
         delay(100);
         noTone(8);
 
-      
+
         delay(50);
 
-      
+
         tone(8, tone1);
         delay(100);
         noTone(8);
 
-      
+
         delay(50);
 
-      
+
         tone(8, tone5);
         delay(100);
         noTone(8);
-        
+
         while (analogRead(A7) != 0) {}
       }
-    }
-    else{
+    } else {
       buttonreset = 0;
       removed = 0;
       lastpressed = buttons[6];
@@ -359,6 +357,6 @@ void loop() {
       while (analogRead(A7) != 0) {}
     }
   }
-  
+
   delay(50);
 }
